@@ -3,29 +3,19 @@ package ir.ali.searchmovies.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.ali.searchmovies.R
 import ir.ali.searchmovies.data.model.Movie
 
-class MovieListAdapter(private val list: MutableList<Movie>) : RecyclerView.Adapter<MovieViewHolder>() {
+class MovieListAdapter : ListAdapter<Movie, MovieViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return MovieViewHolder(inflater, parent)
+        return MovieViewHolder(LayoutInflater.from(parent.context), parent)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie: Movie = list[position]
-        holder.bind(movie)
-    }
-
-    override fun getItemCount(): Int = list.size
-
-    fun updateList(newList: List<Movie>) {
-        DiffUtil.calculateDiff(DiffCallback(list, newList)).dispatchUpdatesTo(this)
-        list.clear()
-        list.addAll(newList)
+        holder.bind(getItem(position))
     }
 
 }
