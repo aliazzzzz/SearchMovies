@@ -37,7 +37,7 @@ class MovieViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
 
     fun bind(movie: Movie) {
         titleTV?.text = movie.title
-        yearTV?.text = movie.year.toString()
+        yearTV?.text = movie.year
     }
 
 }

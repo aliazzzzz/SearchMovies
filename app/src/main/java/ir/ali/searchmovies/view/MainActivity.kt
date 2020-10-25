@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val viewModel : MainViewModel by viewModels{viewModelFactory}
+        viewModel.API_KEY = resources.getString(R.string.api_key)
         movie_recycler.layoutManager = LinearLayoutManager(this)
 
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -36,16 +37,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel
-                    .movieListObs
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe{refreshList(it)}
+                viewModel.queryObs.onNext(query)
 
                 return false
             }
 
         })
+
+
+        viewModel
+            .movieListObs
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { refreshList(it) }
 
     }
 

@@ -1,12 +1,27 @@
 package ir.ali.searchmovies.view
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
+import ir.ali.searchmovies.data.MovieRepository
 import ir.ali.searchmovies.data.model.Movie
 import javax.inject.Inject
 
 
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor(repo: MovieRepository) : ViewModel() {
 
-    val movieListObs: Observable<List<Movie>> = Observable.just(arrayListOf(Movie("Movie 1", 1990), Movie("Movie 2", 2003), Movie("Movie 3", 2014)))
+    lateinit var API_KEY: String
+
+    val queryObs: BehaviorSubject<String> = BehaviorSubject.create()
+    val movieListObs: Observable<List<Movie>> = queryObs
+        .observeOn(Schedulers.io())
+        .switchMap { query ->
+            repo.getMovieList(API_KEY, query)
+                .doOnError { error ->
+                    Log.e("SearchError", error.toString())
+                }
+                .onErrorResumeNext(Observable.just(arrayListOf(Movie("Error", "0000"))))
+        }
 }

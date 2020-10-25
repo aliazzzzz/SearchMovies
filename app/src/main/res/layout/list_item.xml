@@ -16,7 +16,7 @@
         android:paddingStart="16dp"
         android:paddingRight="16dp"
         android:paddingEnd="16dp"
-        android:text="Title"
+        android:text="@string/title"
         android:textStyle="bold"/>
 
     <TextView
@@ -28,6 +28,6 @@
         android:paddingStart="16dp"
         android:paddingRight="16dp"
         android:paddingEnd="16dp"
-        android:text="description"/>
+        android:text="@string/description"/>
 
 </LinearLayout>
