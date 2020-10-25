@@ -8,6 +8,8 @@ data class SearchMovieDataModel (
 )
 
 data class Result(
+    @SerializedName("id")
+    val id: Int,
     @SerializedName("title")
     val title: String,
     @SerializedName("release_date")

@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         val viewModel : MainViewModel by viewModels{viewModelFactory}
         viewModel.API_KEY = resources.getString(R.string.api_key)
         movie_recycler.layoutManager = LinearLayoutManager(this)
+        movie_recycler.adapter = MovieListAdapter(arrayListOf())
 
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -54,6 +55,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshList(movies: List<Movie>) {
-        movie_recycler.adapter = MovieListAdapter(movies)
+        (movie_recycler.adapter as MovieListAdapter).updateList(movies)
     }
 }

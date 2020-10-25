@@ -22,6 +22,6 @@ class MainViewModel @Inject constructor(repo: MovieRepository) : ViewModel() {
                 .doOnError { error ->
                     Log.e("SearchError", error.toString())
                 }
-                .onErrorResumeNext(Observable.just(arrayListOf(Movie("Error", "0000"))))
+                .onErrorResumeNext(Observable.just(arrayListOf(Movie(-1, "Error", "0000"))))
         }
 }

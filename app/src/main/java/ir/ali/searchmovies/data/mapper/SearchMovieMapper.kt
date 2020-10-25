@@ -10,6 +10,7 @@ class SearchMovieMapper @Inject constructor() {
 
         return serverModel.results.map {
             Movie(
+                it.id,
                 it.title,
                 if (it.releaseDate != null)
                     if (it.releaseDate.length > 4)

@@ -3,11 +3,12 @@ package ir.ali.searchmovies.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ir.ali.searchmovies.R
 import ir.ali.searchmovies.data.model.Movie
 
-class MovieListAdapter(private val list: List<Movie>) : RecyclerView.Adapter<MovieViewHolder>() {
+class MovieListAdapter(private val list: MutableList<Movie>) : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -20,6 +21,12 @@ class MovieListAdapter(private val list: List<Movie>) : RecyclerView.Adapter<Mov
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun updateList(newList: List<Movie>) {
+        DiffUtil.calculateDiff(DiffCallback(list, newList)).dispatchUpdatesTo(this)
+        list.clear()
+        list.addAll(newList)
+    }
 
 }
 
