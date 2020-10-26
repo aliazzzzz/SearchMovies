@@ -1,4 +1,4 @@
-package ir.ali.searchmovies.view
+package ir.ali.searchmovies.ui.search
 
 import androidx.recyclerview.widget.DiffUtil
 import ir.ali.searchmovies.data.model.Movie

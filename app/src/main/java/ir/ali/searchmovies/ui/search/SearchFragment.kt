@@ -1,35 +1,51 @@
-package ir.ali.searchmovies.view
+package ir.ali.searchmovies.ui.search
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.android.support.DaggerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ir.ali.searchmovies.R
-import ir.ali.searchmovies.SearchMoviesApp
 import ir.ali.searchmovies.data.model.Movie
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+
+class SearchFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val component = (applicationContext as SearchMoviesApp).appComponent
-        component.inject(this)
 
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        val viewModel : MainViewModel by viewModels{viewModelFactory}
+        return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val viewModel : SearchViewModel by viewModels{viewModelFactory}
         viewModel.API_KEY = resources.getString(R.string.api_key)
-        movie_recycler.layoutManager = LinearLayoutManager(this)
-        movie_recycler.adapter = MovieListAdapter()
+
+        movie_recycler.layoutManager = LinearLayoutManager(context)
+        movie_recycler.adapter = MovieListAdapter(
+            object : MovieListAdapter.OnItemClickListener {
+                override fun onItemClick(item: Movie) {
+                    findNavController().navigate(R.id.action_mainFragment_to_detailsFragment)
+                }
+            })
 
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -45,7 +61,6 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-
         viewModel
             .movieListObs
             .subscribeOn(Schedulers.io())
@@ -57,4 +72,5 @@ class MainActivity : AppCompatActivity() {
     private fun refreshList(movies: List<Movie>) {
         (movie_recycler.adapter as MovieListAdapter).submitList(movies)
     }
+
 }

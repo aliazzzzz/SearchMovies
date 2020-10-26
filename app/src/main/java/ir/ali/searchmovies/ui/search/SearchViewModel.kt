@@ -1,4 +1,4 @@
-package ir.ali.searchmovies.view
+package ir.ali.searchmovies.ui.search
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -10,7 +10,7 @@ import ir.ali.searchmovies.data.model.Movie
 import javax.inject.Inject
 
 
-class MainViewModel @Inject constructor(repo: MovieRepository) : ViewModel() {
+class SearchViewModel @Inject constructor(repo: MovieRepository) : ViewModel() {
 
     lateinit var API_KEY: String
 
