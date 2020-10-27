@@ -39,7 +39,8 @@ class SearchFragment : Fragment() {
         movie_recycler.adapter = MovieListAdapter(
             object : MovieListAdapter.OnItemClickListener {
                 override fun onItemClick(item: Movie) {
-                    findNavController().navigate(R.id.action_mainFragment_to_detailsFragment)
+                    val action = SearchFragmentDirections.actionMainFragmentToDetailsFragment(item.id)
+                    findNavController().navigate(action)
                 }
             })
 

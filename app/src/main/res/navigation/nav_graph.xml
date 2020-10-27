@@ -18,5 +18,10 @@
         android:id="@+id/detailsFragment"
         android:name="ir.ali.searchmovies.ui.details.DetailsFragment"
         android:label="details_fragment"
-        tools:layout="@layout/details_fragment" />
+        tools:layout="@layout/details_fragment" >
+        <argument
+            android:name="movieID"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>
