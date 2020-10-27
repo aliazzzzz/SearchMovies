@@ -1,18 +1,20 @@
 package ir.ali.searchmovies.ui.details
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ir.ali.searchmovies.R
+import ir.ali.searchmovies.data.model.MovieDetails
 import kotlinx.android.synthetic.main.details_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsFragment : Fragment() {
 
-    private lateinit var viewModel: DetailsViewModel
     private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -22,14 +24,24 @@ class DetailsFragment : Fragment() {
         return inflater.inflate(R.layout.details_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val viewModel : DetailsViewModel by viewModel()
+        viewModel.API_KEY = resources.getString(R.string.api_key)
+        viewModel.movieIdObs.onNext(args.movieID)
+
+        viewModel
+            .movieDetailsObs
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { refresh(it) }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        details_tv.text = args.movieID.toString()
+    private fun refresh(data: MovieDetails) {
+        details_title.text = data.title
+        details_year.text = data.year
+        details_genres.text = data.genres
+        details_overview.text = data.overview
     }
 
 }
