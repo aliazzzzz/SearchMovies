@@ -1,16 +1,13 @@
 package ir.ali.searchmovies.di
 
-import dagger.Module
-import dagger.Provides
 import ir.ali.searchmovies.data.ApiService
+import org.koin.dsl.module
 import retrofit2.Retrofit
 
-@Module(includes = [NetworkModule::class])
-class ApiModule {
+val apiModule = module {
+    single { bindApiService(get()) }
+}
 
-    @Provides
-    fun bindApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
-
+fun bindApiService(retrofit: Retrofit): ApiService {
+    return retrofit.create(ApiService::class.java)
 }

@@ -2,9 +2,8 @@ package ir.ali.searchmovies.data.mapper
 
 import ir.ali.searchmovies.data.model.Movie
 import ir.ali.searchmovies.data.model.SearchMovieDataModel
-import javax.inject.Inject
 
-class SearchMovieMapper @Inject constructor() {
+class SearchMovieMapper constructor() {
 
     fun toMovieList(serverModel: SearchMovieDataModel): List<Movie> {
 

@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.support.DaggerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ir.ali.searchmovies.R
 import ir.ali.searchmovies.data.model.Movie
 import kotlinx.android.synthetic.main.fragment_main.*
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchFragment : DaggerFragment() {
+class SearchFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
 
     override fun onCreateView(
@@ -36,7 +32,7 @@ class SearchFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel : SearchViewModel by viewModels{viewModelFactory}
+        val viewModel : SearchViewModel by viewModel()
         viewModel.API_KEY = resources.getString(R.string.api_key)
 
         movie_recycler.layoutManager = LinearLayoutManager(context)

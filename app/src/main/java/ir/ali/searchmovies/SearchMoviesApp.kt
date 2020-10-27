@@ -1,12 +1,20 @@
 package ir.ali.searchmovies
 
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
-import ir.ali.searchmovies.di.DaggerAppComponent
+import android.app.Application
+import ir.ali.searchmovies.di.apiModule
+import ir.ali.searchmovies.di.appModule
+import ir.ali.searchmovies.di.networkModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class SearchMoviesApp: DaggerApplication() {
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().application(this).build()
+class SearchMoviesApp : Application() {
+    override fun onCreate(){
+        super.onCreate()
+
+        startKoin {
+            androidContext(this@SearchMoviesApp)
+            modules(appModule, networkModule, apiModule)
+        }
     }
 }

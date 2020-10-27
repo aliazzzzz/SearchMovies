@@ -7,10 +7,9 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import ir.ali.searchmovies.data.MovieRepository
 import ir.ali.searchmovies.data.model.Movie
-import javax.inject.Inject
 
 
-class SearchViewModel @Inject constructor(repo: MovieRepository) : ViewModel() {
+class SearchViewModel constructor(repo: MovieRepository) : ViewModel() {
 
     lateinit var API_KEY: String
 
